@@ -1,5 +1,3 @@
-//ainda falta terminar esse exercício
-//lista ponteiro strings
 
 #define MAX 100
 
@@ -14,6 +12,7 @@ struct lista {
 
 void insere(char string[MAX], struct lista *p);
 void juntaLista(char string[MAX], struct lista *a, struct lista *b);
+void imprimeLista(struct lista *p);
 
 int main(void){
 
@@ -50,29 +49,67 @@ int main(void){
     
     juntaLista(buscaAmg, luiggy, amigos);
 
+    //imprime a lista apos a adição dos novos amigos
+    imprimeLista(luiggy);
+
 }
 
 //crie uma celula nova na lista
 void insere(char string[MAX], struct lista *p){
-    struct lista *novaN;
+    struct lista *novaN, *temp;
     novaN = malloc(sizeof(struct lista));
     strcpy(novaN->nome, string);
-    novaN->seguinte = p->seguinte;
-    p->seguinte = novaN;
+    novaN->seguinte = NULL;
+    
+    temp = p;
+    while(temp->seguinte != NULL){
+        temp = temp->seguinte;
+    }
+    temp->seguinte = novaN;
 }
 
 
 //procura o nome do amigo na listaL e insere a listaN imediatamente antes desse nome
 //caso 'nao' insere listaN depois de listaL
 void juntaLista(char string[MAX], struct lista *a, struct lista *b){
-    struct lista *p, *q, *nova;
-    nova = malloc(sizeof(struct lista));
+    struct lista *p, *q;
+    
+    if(strcmp(string, "nao") == 0){
+            p = a;
+
+        while(p->seguinte != NULL){
+            p = p->seguinte;
+        }
+        p->seguinte = b->seguinte;
+        return;
+    }
+
     p = a;
     q = a->seguinte;
-    while(q != NULL && (strcmp(q->nome,string) != 0)){
+    while (q != NULL && strcmp(q->nome, string) != 0){
         p = q;
         q = q->seguinte;
     }
-    b->seguinte = q;
-    p->seguinte = b;
+
+    if(q != NULL){
+        p->seguinte = b->seguinte;
+        while(b->seguinte != NULL){
+            b = b->seguinte;
+        }
+        b->seguinte = q;
+    }
+}
+
+void imprimeLista(struct lista *p){
+    struct lista *q;
+    int primeiro=1;
+    for(q = p->seguinte; q != NULL; q = q->seguinte){
+        if(primeiro){
+            printf("%s", q->nome);
+            primeiro = 0;
+        } else {
+            printf(" %s", q->nome);
+        }
+    }
+    printf("\n");
 }
