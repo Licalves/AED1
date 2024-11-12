@@ -10,14 +10,14 @@ struct fila {
     struct fila *seguinte;
 };
 
-void insere(int n, struct fila *p);
-void buscaRemove(int n, struct fila*p);
+void insere(int n, struct fila **es, struct fila **et);
+void buscaRemove(int n, struct fila **es, struct fila **et);
 void printaFila(struct fila *p);
 
 int main(void){
 
     int qnt1, qnt2, temp;
-    struct fila *p1 = malloc(sizeof(struct fila));
+    struct fila *s=NULL, *t=NULL;
 
     //quantidade de pessoas na fila
     scanf("%d", &qnt1);
@@ -25,7 +25,7 @@ int main(void){
     //criando a lista com os indentificadores
     for(int i=0; i<qnt1; i++){
         scanf("%d", &temp);
-        insere(temp, p1);
+        insere(temp, &s, &t);
     }
 
     //quantidade de pessoas que sairam da fila
@@ -34,53 +34,66 @@ int main(void){
     //tirando da fila as pessoas que sairam da fila
     for(int i=0; i<qnt2; i++){
         scanf("%d", &temp);
-        buscaRemove(temp, p1);
+        buscaRemove(temp, &s, &t);
     }
 
     //printando a fila
-    printaFila(p1);
+    printaFila(s);
+
+    return 0;
 
 }
 
-void insere(int n, struct fila *p){
-    struct fila *nova, *temp;
+void insere(int n, struct fila **es, struct fila **et){
+    struct fila *nova;
     nova = malloc(sizeof(struct fila));
-    nova->seguinte = NULL;
     nova->ident = n;
-
-    temp = p;
-    while(temp->seguinte != NULL){
-        temp = temp->seguinte;
+    nova->seguinte = NULL;
+    if(*et == NULL){
+        *et = *es = nova;
+    } else {
+        (*et)->seguinte = nova;
+        *et = nova;
     }
-    temp->seguinte = nova;
+
 }
 
-void buscaRemove(int n, struct fila*p){
-    struct fila *a, *b;
-    a = p;
-    b = p->seguinte;
-    while(b != NULL && b->ident != n){
-        a = b;
-        b = b->seguinte;
+void buscaRemove(int n, struct fila **es, struct fila **et){
+    struct fila *p = *es, *anterior=NULL;
+
+    while(p != NULL && p->ident != n){
+        anterior = p;
+        p = p->seguinte;
     }
 
-    if(b != NULL){
-        a->seguinte = b->seguinte;
-        free(b);
+    if(p != NULL){
+        if(anterior == NULL){
+            *es = p->seguinte;
+            if(*es == NULL){
+                *et = NULL;
+            }
+    } else {
+        anterior->seguinte = p->seguinte;
+        if(p == *et){
+            *et = anterior;
+        }
     }
-
+        free(p);
+    }
 }
 
 void printaFila(struct fila *p){
-    struct fila *q;
+    struct fila *q = p;
     int primeiro = 1;
-    for(q = p->seguinte; q != NULL; q = q->seguinte){
+    while( p != NULL){
         if(primeiro){
-            printf("%d", q->ident);
-            primeiro = 0;
+          printf("%d", p->ident);
+          primeiro = 0;
         } else {
-            printf(" %d", q->ident);
+            printf(" %d", p->ident);
         }
+
+        p = p->seguinte;
     }
     printf("\n");
 }
