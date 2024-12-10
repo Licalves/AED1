@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+typedef struct lista {
+    char nome[20];
+    struct lista *seg;
+} chamada;
+
+void insere(chamada **es, char y[20] ){
+    chamada *nova;
+    nova = malloc(sizeof(chamada));
+    strcpy(nova->nome, y);
+    nova->seg = NULL;
+    
+}
+
+
+
+int main (void) {
+
+    chamada *c;
+    c = NULL;
+
+
+
+    return 0;
+}
