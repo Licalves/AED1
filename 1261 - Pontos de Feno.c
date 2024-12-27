@@ -32,20 +32,42 @@ int main(void){
 
     int total[n];
 
+    getchar();  
+
     for(int i=0; i<m; i++){
         scanf("%c", palavra);
         scanf("%d", &valor);
+        getchar();
         insere(valor, palavra, &dics, &dict);
     }
 
     celula *p;
-    p = dics;
+    int t=0;
+
+    fgets(texto, sizeof(texto), stdin);
 
     for(int i=0; i<n; i++){
-        fgets(texto, sizeof(texto), stdin);
-        for(int j=0; j<m; j++){
-            strcspn()
+        total[i] = 0;
+        
+        while (1) {
+            fgets(texto + strlen(texto), sizeof(texto) - strlen(texto), stdin);   
+             if (strcmp(texto + strlen(texto) - 2, ".\n") == 0) {   
+                texto[strlen(texto) - 2] = '\0';   
+                break;  
+            }
         }
 
+        p = dics;
+
+        while(p != NULL){
+            if(strstr(texto, p->palavra)!=NULL){
+                total[i] += p->valor;
+            }
+            p = p->seg;
+        }
+    }
+
+    for(int i=0; i<n; i++){
+        printf("%d\n", total[i]);
     }
 }   
