@@ -1,4 +1,4 @@
-//TERMINAR AINDA
+//Não consegui fazer, problema apresentado: Runtime Error
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +15,7 @@ void insere(int valor, char palavra[16], celula **es, celula **et){
     nova = malloc(sizeof(celula));
     strcpy(nova->palavra, palavra);
     nova->valor = valor;
+    nova->seg = NULL;
     if(*et == NULL) *es = *et = nova;
     (*et)->seg = nova;
     *et = nova;
@@ -35,39 +36,39 @@ int main(void){
     getchar();  
 
     for(int i=0; i<m; i++){
-        scanf("%c", palavra);
+        scanf("%s", palavra);
         scanf("%d", &valor);
         getchar();
         insere(valor, palavra, &dics, &dict);
     }
 
     celula *p;
-    int t=0;
 
-    fgets(texto, sizeof(texto), stdin);
+    for (int i = 0; i < n; i++) {
+    total[i] = 0;
+    p = dics;
+    
+    while (1) {
+        fgets(texto, sizeof(texto), stdin);
+        texto[strcspn(texto, "\n")] = '\0';
 
-    for(int i=0; i<n; i++){
-        total[i] = 0;
-        
-        while (1) {
-            fgets(texto + strlen(texto), sizeof(texto) - strlen(texto), stdin);   
-             if (strcmp(texto + strlen(texto) - 2, ".\n") == 0) {   
-                texto[strlen(texto) - 2] = '\0';   
-                break;  
-            }
+        if (strcmp(texto, ".") == 0) {
+            break;  
         }
-
         p = dics;
-
-        while(p != NULL){
-            if(strstr(texto, p->palavra)!=NULL){
+        while (p != NULL) {
+            if (strstr(texto, p->palavra) != NULL) {
                 total[i] += p->valor;
             }
-            p = p->seg;
+            p = p->seg;  
         }
     }
+}
+
 
     for(int i=0; i<n; i++){
         printf("%d\n", total[i]);
     }
+
+    
 }   
