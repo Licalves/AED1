@@ -8,25 +8,22 @@ int main(void) {
     for (int count = 0; count < n; count++) { 
         scanf("%d %d", &m, &c);  
         
-        int hashtable[100][10] = {0}; 
-        int casa[100] = {0}; 
+        int hashtable[100][200] = {0};  
+        int casa[100] = {0};  
 
         for (int i = 0; i < c; i++) {
             scanf("%d", &chaves);
             keybase = chaves % m;  
-            
             hashtable[keybase][casa[keybase]] = chaves;
             casa[keybase]++;
         }
 
         for (int i = 0; i < m; i++) {
-            printf("%d -> ", i);
-            int k = 0;
-            while (k < casa[i]) {  
-                printf("%d -> ", hashtable[i][k]);
-                k++;
+            printf("%d ->", i);
+            for (int k = 0; k < casa[i]; k++) {
+                printf(" %d ->", hashtable[i][k]);
             }
-            printf("\\\n");  
+            printf(" \\\n");  
         }
 
         if (count < n - 1) { 
@@ -36,4 +33,3 @@ int main(void) {
 
     return 0;
 }
-
